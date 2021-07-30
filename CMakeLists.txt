@@ -3,11 +3,6 @@ project(Ransomeware VERSION 1.0  LANGUAGES CSharp)
 
 include(CSharpUtilities)
 
-add_executable(main lancher.cs)
+add_subdirectory(AES)
 
-set_property(TARGET main PROPERTY VS_DOTNET_REFERENCES
-    "System"
-    "System.Net"
-    "System.ComponentModel"
-    "System.Data"
-)
+add_subdirectory(Dropper)
