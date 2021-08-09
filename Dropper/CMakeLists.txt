@@ -1,6 +1,5 @@
 
-add_library(dropper
-    SHARED
+add_executable(dropper
     App.config
     DropperGUI.cs
     DropperGUI.Designer.cs
@@ -20,7 +19,7 @@ add_library(dropper
     Properties/Settings.Designer.cs
     Properties/Settings.settings)
 
-set_property(TARGET AESLIB PROPERTY WIN32_EXECUTABLE TRUE)
+set_property(TARGET dropper PROPERTY WIN32_EXECUTABLE TRUE)
 
 # Set the C# language version (defaults to 3.0).
 set(CMAKE_CSharp_FLAGS "/langversion:latest")
