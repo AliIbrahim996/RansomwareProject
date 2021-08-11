@@ -41,7 +41,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DOTNET_REFERENCES
 " Microsoft.Win32"
  "System"
  "AES"
- "AES.AES"
+ "AES.Cipher"
  "System.Data"
  "System.Diagnostics"
  "System.Drawing"

