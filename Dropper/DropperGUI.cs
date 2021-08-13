@@ -175,6 +175,7 @@ namespace Dropper
 
         private void DropperGUI_Load(object sender, EventArgs e)
         {
+
             StartAction();
         }
     }
