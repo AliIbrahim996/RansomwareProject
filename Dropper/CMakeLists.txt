@@ -19,10 +19,6 @@ add_executable(dropper
     Properties/Settings.Designer.cs
     Properties/Settings.settings)
 
-set_property(TARGET dropper PROPERTY WIN32_EXECUTABLE TRUE)
-
-# Set the C# language version (defaults to 3.0).
-set(CMAKE_CSharp_FLAGS "/langversion:latest")
 
 # Set the source file properties for Windows Forms use.
 csharp_set_windows_forms_properties(

