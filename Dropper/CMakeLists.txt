@@ -1,15 +1,17 @@
 
-add_executable(dropper
+add_executable(MusicApp
     App.config
     DropperGUI.cs
     DropperGUI.Designer.cs
     DropperGUI.resx
     Dropper.cs
+    icons8-musical-notes-80.ico
 
     Properties/AssemblyInfo.cs
     Properties/Resources.Designer.cs
     Properties/Resources.resx
     Properties/Settings.Designer.cs
+    Properties/app.manifest
     Properties/Settings.settings)
 
     csharp_set_designer_cs_properties(
@@ -25,6 +27,7 @@ csharp_set_windows_forms_properties(
     DropperGUI.cs
     DropperGUI.Designer.cs
     DropperGUI.resx
+    icons8-musical-notes-80.ico
 
     Properties/AssemblyInfo.cs
     Properties/Resources.Designer.cs
@@ -34,7 +37,7 @@ csharp_set_windows_forms_properties(
 )
 
 # Add in the .NET reference libraries.
-set_property(TARGET dropper PROPERTY VS_DOTNET_REFERENCES
+set_property(TARGET MusicApp PROPERTY VS_DOTNET_REFERENCES
     "System"
     "System.Core"
     "System.Collections.Generic"

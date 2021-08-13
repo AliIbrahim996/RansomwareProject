@@ -12,3 +12,5 @@ set_property(TARGET AES PROPERTY VS_DOTNET_REFERENCES
     "System.Text"
     "System.IO"
 )
+
+install(FILES "${CMAKE_BINARY_DIR}/AES/Debug/AES.dll" DESTINATION bin)
