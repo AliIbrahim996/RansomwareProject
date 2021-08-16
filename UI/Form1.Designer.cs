@@ -155,7 +155,7 @@ namespace Ransomeware
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Red;
-            this.ClientSize = new System.Drawing.Size(829, 471);
+            this.ClientSize = new System.Drawing.Size(935, 471);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
@@ -164,6 +164,7 @@ namespace Ransomeware
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.codeBox);
             this.Cursor = System.Windows.Forms.Cursors.No;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";

